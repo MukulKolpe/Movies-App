@@ -35,7 +35,7 @@ jobs:
           channel: "stable"
       - run: flutter pub get
       - run: flutter clean
-      - run: flutter build appbundle --release
+      - run: flutter build apk --release
 
   build_ios:
     name: Flutter Build iOS
