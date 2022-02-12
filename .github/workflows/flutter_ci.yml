@@ -30,7 +30,7 @@ jobs:
       - uses: actions/setup-java@v2
         with:
           distribution: "zulu"
-          java-version: "11"
+          kotlin-version: "1.6.10"
       - uses: subosito/flutter-action@v2
         with:
           channel: "stable"
