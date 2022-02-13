@@ -74,10 +74,16 @@ jobs:
           channel: "stable"
       - run: flutter pub get
       - run: flutter clean
-      - run: |
-          flutter build web
-          cd build/web
-          zip -r web-app.zip .
-      - uses: subosito/flutter-action@v2
+      - run: flutter build web
+      - uses: actions/upload-artifact@v2
         with:
-          path: build/web/*.zip
+          path: build/web
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: production-files
+          path: ./build
+      - name: Deploy to gh-pages
+      - uses: peaceiris/actions-gh-pages@v3
+        with:
+          publish_dir: ./build
