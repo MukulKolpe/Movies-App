@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v1
         with:
-          java-version: "12.x"
+          java-version: "8.x"
       - uses: subosito/flutter-action@v2
         with:
           channel: "stable"
@@ -29,18 +29,18 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v1
         with:
-          java-version: "16.x"
+          java-version: "8.x"
       - uses: subosito/flutter-action@v2
         with:
           channel: "stable"
       - run: flutter pub get
       - run: flutter clean
-      - run: flutter build apk --debug --split-per-abi
-      - name: Push to Releases
-      - uses: ncipollo/release-action@v1
+      - run: flutter build apk
+      - uses: actions/upload-artifact@v1
         with:
-          artifacts: "build/app/outputs/apk/debug/*"
-          
+          name: release-apk
+          path: build/app/outputs/apk/release/app-release.apk
+
   build_ios:
     name: Flutter Build iOS
     needs: [flutter_test]
@@ -49,10 +49,36 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v1
         with:
-          java-version: "12.x"
+          java-version: "8.x"
       - uses: subosito/flutter-action@v2
         with:
           channel: "stable"
       - run: flutter pub get
       - run: flutter clean
-      - run: flutter build ios --release --no-codesign
+      - run: 
+          flutter build ios --no-codesign
+          cd build/ios/iphoneos
+          mkdir Payload
+          ln -s ../Runner.app
+          cd ..
+          zip -r app.ipa Payload
+      - uses: actions/upload-artifact@v1
+      - name: release-ios
+        with:
+          artifacts: "build/app/outputs/apk/debug/*,build/ios/iphoneos/app.ipa"
+
+  build_web:
+    name: Flutter Build web
+    needs: [flutter_test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with:
+          java-version: "8.x"
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+      - run: flutter pub get
+      - run: flutter clean
+      - run: flutter build web
