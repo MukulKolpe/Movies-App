@@ -56,10 +56,10 @@ jobs:
       - run: flutter pub get
       - run: flutter clean
       - run: |
-          flutter build ios --release --no-codesign
+          flutter build ios
           cd build/ios/iphoneos
           mkdir Payload
-          ln -s ../Runner.app
+          ln ../Runner.app
           cd ..
           zip -r app.ipa Payload
 
