@@ -82,4 +82,11 @@ jobs:
           channel: "stable"
       - run: flutter pub get
       - run: flutter clean
-      - run: flutter build web
+      - run: |
+          flutter build web
+          cd build/web
+          zip -r web-app.zip .
+      - uses: actions/upload-artifact@v1
+        with:
+          name: release-web
+          path: build/web/web-app.zip
