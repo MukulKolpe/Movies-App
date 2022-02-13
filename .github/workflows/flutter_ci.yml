@@ -62,8 +62,8 @@ jobs:
           ln -s ../Runner.app
           cd ..
           zip -r app.ipa Payload
-      - uses: actions/upload-artifact@v1
       - name: release-ios
+      - uses: ncipollo/release-action@v1
         with:
           artifacts: "build/ios/iphoneos/app.ipa"
 
