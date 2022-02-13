@@ -55,14 +55,11 @@ jobs:
           channel: "stable"
       - run: flutter pub get
       - run: flutter clean
-      - run: |
-          flutter build ios --release --no-codesign
-          cd build/ios/iphoneos
-          mkdir Payload
-          ln -s ../Runner.app
-          cd ..
-          zip -r app.ipa Payload
-
+      - run: flutter build ios --release --no-codesign
+      - uses: actions/upload-artifact@v1
+        with:
+          name: release-ios
+          path: build/ios/Release-iphoneos/Runner.app
   build_web:
     name: Flutter Build web
     needs: [flutter_test]
