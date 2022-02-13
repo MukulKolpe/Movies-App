@@ -39,7 +39,7 @@ jobs:
       - uses: actions/upload-artifact@v1
         with:
           name: release-apk
-          path: build/app/outputs/apk/release/app-release.apk
+          path: build/app/outputs/apk/release/*.apk
 
   build_ios:
     name: Flutter Build iOS
@@ -55,7 +55,7 @@ jobs:
           channel: "stable"
       - run: flutter pub get
       - run: flutter clean
-      - run: 
+      - run: |
           flutter build ios --no-codesign
           cd build/ios/iphoneos
           mkdir Payload
@@ -65,7 +65,7 @@ jobs:
       - uses: actions/upload-artifact@v1
       - name: release-ios
         with:
-          artifacts: "build/app/outputs/apk/debug/*,build/ios/iphoneos/app.ipa"
+          artifacts: "build/app/outputs/apk/release/*.apk,build/ios/iphoneos/app.ipa"
 
   build_web:
     name: Flutter Build web
